@@ -46,23 +46,21 @@ git clone https://github.com/NutaEnjoyer/fast-api-backend.git
 cd fast-api-backend 
 ```
 
-```markdown
 ### 2. Создайте `.env` файл
 
 Создайте `.env` файл, заполненный переменными окружения по примеру из `.env.example`.
 
 ### 3. Запуск с Docker
-```
+
 ```shell
 docker build -t fastapi-backend .
 docker run -d -p 8000:8000 --env-file .env fastapi-backend
 ```
 
-```markdown
 ### 4. Локальный запуск (без Docker)
 
 Убедитесь, что у вас установлен Python 3.10+
-```
+
 ```shell
 python -m venv venv
 source venv/bin/activate  # или venv\Scripts\activate на Windows
