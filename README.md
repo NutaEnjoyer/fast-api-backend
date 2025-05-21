@@ -22,18 +22,18 @@
 
 ## 📁 Структура проекта
 
-├── app/ # Основной код приложения
-│ ├── core/ # Настройки, конфигурации, зависимости
-│ ├── models/ # SQLAlchemy модели
-│ ├── routes/ # FastAPI роутеры
-│ ├── schemas/ # Pydantic-схемы
-│ ├── services/ # Бизнес-логика
-│ └── main.py # Точка входа
-├── alembic/ # Миграции базы данных
-├── Dockerfile # Docker-контейнер
-├── .env # Переменные окружения (не включён в git)
-├── requirements.txt # Python-зависимости
-└── README.md 
+├── app/ # Основной код приложения(```)
+│ ├── core/ # Настройки, конфигурации, зависимости(```)
+│ ├── models/ # SQLAlchemy модели(```)
+│ ├── routes/ # FastAPI роутеры(```)
+│ ├── schemas/ # Pydantic-схемы(```)
+│ ├── services/ # Бизнес-логика(```)
+│ └── main.py # Точка входа(```)
+├── alembic/ # Миграции базы данных(```)
+├── Dockerfile # Docker-контейнер(```)
+├── .env # Переменные окружения (не включён в git)(```)
+├── requirements.txt # Python-зависимости(```)
+└── README.md (```)
 
 ## ⚙️ Установка и запуск
 
@@ -41,7 +41,7 @@
 
 ```shell
 git clone https://github.com/NutaEnjoyer/fast-api-backend.git
-cd fast-api-backend
+cd fast-api-backend ```
 
 ```markdown
 ### 2. Создайте `.env` файл
@@ -53,7 +53,7 @@ cd fast-api-backend
 
 ```shell
 docker build -t fastapi-backend .
-docker run -d -p 8000:8000 --env-file .env fastapi-backend
+docker run -d -p 8000:8000 --env-file .env fastapi-backend```
 
 ```markdown
 ### 4. Локальный запуск (без Docker)
@@ -64,14 +64,14 @@ docker run -d -p 8000:8000 --env-file .env fastapi-backend
 python -m venv venv
 source venv/bin/activate  # или venv\Scripts\activate на Windows
 pip install -r requirements.txt
-uvicorn app.main:app --reload
+uvicorn app.main:app --reload```
 
 ```markdown
 ## 🛠 Alembic миграции
 
 ```shell
 # создать новую миграцию
-alembic revision --autogenerate -m "create users table"
+alembic revision --autogenerate -m "create users table"```
 
 # применить миграции
 alembic upgrade head
