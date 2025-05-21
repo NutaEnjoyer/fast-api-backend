@@ -70,9 +70,9 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload
 ```
 
-```markdown
+
 ## 🛠 Alembic миграции
-```
+
 ```shell
 # создать новую миграцию
 alembic revision --autogenerate -m "create users table"```
@@ -81,7 +81,6 @@ alembic revision --autogenerate -m "create users table"```
 alembic upgrade head
 ```
 
-```markdown
 ## 📬 API документация
 
 После запуска приложения откройте в браузере:
