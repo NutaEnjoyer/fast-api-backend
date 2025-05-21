@@ -1,7 +1,9 @@
-from app.core.database import UserOrm
+from sqlalchemy import and_, func, select
+from app.core.database import TaskOrm, UserOrm
 from app.dto.auth_dto import AuthDto
-from app.dto.user_dto import UpdateUserDto, UserDto
+from app.dto.user_dto import GetUserDto, UpdateUserDto, UserDto
 from app.repository.user_repository import UserRepository
+from app.utils.date import get_start_datetime
 
 
 class UserService():
@@ -15,6 +17,20 @@ class UserService():
         user = await self.user_repository.create(dto)
         return self._to_dto(user)
     
+    async def get_me(self, id: str) -> GetUserDto:
+        user = await self.user_repository.find_by_id(id)
+
+        today_start, week_start = get_start_datetime()
+        total_tasks, completed_tasks, today_tasks, week_tasks = await self.user_repository.get_tasks_statistic(id, today_start, week_start)
+
+        return GetUserDto(
+            **UserDto.model_validate(user).model_dump(),
+            total_tasks=total_tasks,
+            completed_tasks=completed_tasks,
+            today_tasks=today_tasks,
+            week_tasks=week_tasks,
+        )
+
     async def find_by_id(self, id: str) -> UserDto:
         user = await self.user_repository.find_by_id(id)
         return self._to_dto(user)

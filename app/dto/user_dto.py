@@ -19,5 +19,11 @@ class UpdateUserDto(BaseModel):
     break_interval: int | None = None
     interval_count : int | None = None
 
+class GetUserDto(UserDto):
+    total_tasks: int
+    completed_tasks: int
+    today_tasks: int
+    week_tasks: int
+
 class ResponseUserDto(UserDto):
     ...

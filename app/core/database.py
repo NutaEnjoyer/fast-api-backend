@@ -24,8 +24,8 @@ class BaseModel(Model):
     __abstract__ = True
 
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=lambda: str(uuid4()))
-    createdAt: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
-    updatedAt: Mapped[datetime] = mapped_column(DateTime, default=datetime.now, onupdate=datetime.now)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now, onupdate=datetime.now)
 
 
 class TaskOrm(BaseModel):

@@ -9,8 +9,8 @@ def alias_generator(field_name: str) -> str:
 
 class BaseDto(BaseModel):
     id: str
-    createdAt: datetime
-    updatedAt: datetime
+    created_at: datetime
+    updated_at: datetime
 
     model_config = ConfigDict(
         alias_generator=alias_generator,
