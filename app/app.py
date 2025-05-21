@@ -5,7 +5,7 @@ from contextlib import asynccontextmanager
 from app.api.routers import routers
 from app.core.database import create_tables, delete_tables
 from app.dto.task_dto import CreateTaskDto, TaskDto
-from middlewares.rate_limiter import RateLimiterMiddleware
+from app.middlewares.rate_limiter import RateLimiterMiddleware
 
 
 @asynccontextmanager
