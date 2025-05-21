@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Response, Depends, status
+from fastapi import APIRouter, Request, Response, Depends, status
 from app.dto.auth_dto import AuthDto, AuthResponseDto
 from app.services.auth_service import AuthService
 
@@ -26,3 +26,19 @@ async def login(
     result: AuthResponseDto = await auth_service.login(data, response)
     return result
 
+@router.post('/login/access-token', response_model=AuthResponseDto, status_code=status.HTTP_205_RESET_CONTENT)
+async def login_access_token(
+    request: Request,
+    response: Response,
+    auth_service: AuthService = Depends(get_auth_service)
+    ) -> AuthResponseDto:
+    result: AuthResponseDto = await auth_service.login_access(request)
+    return result
+
+@router.post('/logout')
+async def logout(
+    response: Response,
+    auth_service: AuthService = Depends(get_auth_service)
+    ) -> bool:
+    await auth_service.logout(response)
+    return True
