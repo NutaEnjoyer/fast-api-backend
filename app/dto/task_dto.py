@@ -27,9 +27,6 @@ class TaskResponseDto(ResponseDto):
     
 class UpdateTaskDto(CreateTaskDto):
     title: str | None = None
-    description: str | None = None
-    priority: Priority | None = None
-    is_completed: bool = False
 
 class DeleteTaskResponseDto(ResponseDto):
     id: str

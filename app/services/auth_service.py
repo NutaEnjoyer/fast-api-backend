@@ -1,14 +1,13 @@
 from fastapi import Response, HTTPException
 from app.dto.auth_dto import AuthDto, AuthResponseDto
+from app.repository.user_repository import UserRepository
 from app.services.base_service import BaseService
 from app.core.security import (
     hash_password,
     create_access_token,
     create_refresh_token,
     verify_password,
-    ACCESS_TOKEN_COOKIE_NAME,
     REFRESH_TOKEN_COOKIE_NAME,
-    ACCESS_TOKEN_EXPIRE_MINUTES,
     REFRESH_TOKEN_EXPIRE_MINUTES
     )
 
@@ -17,21 +16,13 @@ class AuthService(BaseService):
     def __init__(self, user_repository: UserRepository = UserRepository()):
         self.user_repository = user_repository
 
-    async def _set_token_cookie(response: Response, access_token: str, refresh_token: str):
-        response.set_cookie(
-            key=ACCESS_TOKEN_COOKIE_NAME,
-            value=access_token,
-            httponly=True,
-            samesite="none",  # "lax" for production
-            max_age=ACCESS_TOKEN_EXPIRE_MINUTES * 60,
-            path="/"
-        )
+    async def _set_refresh_token_cookie(self, response: Response, refresh_token: str):
         response.set_cookie(
             key=REFRESH_TOKEN_COOKIE_NAME,
             value=refresh_token,
             httponly=True,
             secure=False,  # True for production
-            samesite="none",  # "lax" for production
+            samesite="lax",  # "lax" for production
             max_age=REFRESH_TOKEN_EXPIRE_MINUTES * 60,
             path="/"
         )
@@ -46,10 +37,10 @@ class AuthService(BaseService):
         data.password = hashed_password
         user = await self.user_repository.create(data)
 
-        access_token = create_access_token(user)
-        refresh_token = create_refresh_token(user)
+        access_token = create_access_token(user.id)
+        refresh_token = create_refresh_token(user.id)
 
-        await self._set_token_cookie(response, access_token, refresh_token)
+        await self._set_token_cookie(response, refresh_token)
 
         return AuthResponseDto(
             access_token=access_token
@@ -64,11 +55,12 @@ class AuthService(BaseService):
         if not verify_password(data.password, user.password):
             raise HTTPException(status_code=401, detail="Incorrect password")
         
-        access_token = create_access_token(user)
-        refresh_token = create_refresh_token(user)
+        access_token = create_access_token(user.id)
+        refresh_token = create_refresh_token(user.id)
 
-        await self._set_token_cookie(response, access_token, refresh_token)
+        await self._set_token_cookie(response, refresh_token)
 
         return AuthResponseDto(
             access_token=access_token
         )
+    

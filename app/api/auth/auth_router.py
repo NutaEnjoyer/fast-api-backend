@@ -1,6 +1,5 @@
 from fastapi import APIRouter, Response, Depends, status
 from app.dto.auth_dto import AuthDto, AuthResponseDto
-from app.core.security import create_access_token
 from app.services.auth_service import AuthService
 
 

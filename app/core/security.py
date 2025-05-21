@@ -1,7 +1,7 @@
 import bcrypt
 from fastapi.security import OAuth2PasswordBearer
 from jose import jwt, JWTError
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 from app.core.configs import Config
 
@@ -15,21 +15,27 @@ REFRESH_TOKEN_COOKIE_NAME = 'refresh_token'
 
 def create_token(data: dict, _timedelta: timedelta):
     to_encode = data.copy()
-    expire = datetime.now() + _timedelta
+    expire = datetime.now(timezone.utc) + _timedelta
     to_encode.update({"exp": expire})
-    return jwt.encode(data, JWT_SECRET_KEY, algorithm=ALGORITHM)
+    return jwt.encode(to_encode, JWT_SECRET_KEY, algorithm=ALGORITHM)
 
-def create_access_token(data: dict):
-    return create_token(data, timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
+def create_access_token(id: str):
+    return create_token({"id": id}, timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
 
-def create_refresh_token(data: dict):
-    return create_token(data, timedelta(minutes=REFRESH_TOKEN_EXPIRE_MINUTES))
+def create_refresh_token(id: str):
+    return create_token({"id": id}, timedelta(minutes=REFRESH_TOKEN_EXPIRE_MINUTES))
 
 def decode_token(token: str):
     return jwt.decode(token, JWT_SECRET_KEY, algorithms=[ALGORITHM])
 
 def hash_password(password: str) -> str:
-    return bcrypt.hash(password)
+    password_bytes = password.encode('utf-8')         
+    salt = bcrypt.gensalt()                              
+    hashed_bytes = bcrypt.hashpw(password_bytes, salt)  
+    hashed_str = hashed_bytes.decode('utf-8')          
+    return hashed_str
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    return bcrypt.verify(plain_password, hashed_password)
+    password_bytes = plain_password.encode('utf-8')
+    hashed_bytes = hashed_password.encode('utf-8')
+    return bcrypt.checkpw(password_bytes, hashed_bytes)

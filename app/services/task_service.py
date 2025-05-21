@@ -14,9 +14,7 @@ class TaskService(BaseService):
 
     async def create(self, user_id: str, dto: CreateTaskDto) -> TaskDto:
         task = await self.task_repository.create(user_id, dto)
-        print("TASK ORM: ", task)
         res = self._to_dto(task)
-        print("TASK DTO: ", res)
         return self._to_dto(task)
 
     async def get_all(self, user_id) -> List[TaskDto]:
