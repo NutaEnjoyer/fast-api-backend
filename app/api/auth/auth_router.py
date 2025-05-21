@@ -26,13 +26,13 @@ async def login(
     result: AuthResponseDto = await auth_service.login(data, response)
     return result
 
-@router.post('/login/access-token', response_model=AuthResponseDto, status_code=status.HTTP_205_RESET_CONTENT)
+@router.post('/login/access-token', response_model=AuthResponseDto, status_code=status.HTTP_200_OK)
 async def login_access_token(
     request: Request,
     response: Response,
     auth_service: AuthService = Depends(get_auth_service)
     ) -> AuthResponseDto:
-    result: AuthResponseDto = await auth_service.login_access(request)
+    result: AuthResponseDto = await auth_service.login_access(request, response)
     return result
 
 @router.post('/logout')

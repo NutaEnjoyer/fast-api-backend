@@ -1,22 +1,15 @@
-from fastapi import Request, HTTPException, Cookie
+from fastapi import Depends, HTTPException
+from fastapi.security import OAuth2PasswordBearer
 
-from app.core.security import ACCESS_TOKEN_COOKIE_NAME, decode_token
+from app.core.security import decode_token
 
-async def get_current_user(request: Request) -> str:
-    print(request.base_url)
-    print(request.cookies)
-    access_token = request.cookies.get(ACCESS_TOKEN_COOKIE_NAME)
+oauth2scheme = OAuth2PasswordBearer(
+    tokenUrl="/api/auth/login",
+)
 
-    print(access_token)
-    if not access_token:
-        raise HTTPException(status_code=401, detail="Unauthorized")
-    
-    decode = decode_token(access_token)
-    print("DECODE: ", decode, "_END")
-
-    user_id = decode.get("id")
-
-    print(user_id)
-
+async def get_current_user(token: str = Depends(oauth2scheme)) -> str:
+    payload = decode_token(token)
+    user_id = payload.get("id")
+    if not user_id:
+        raise HTTPException(status_code=401, detail="Invalid token")
     return user_id
-
