@@ -15,5 +15,7 @@ class BaseDto(BaseModel):
     model_config = ConfigDict(
         alias_generator=alias_generator,
         populate_by_name=True,
-        from_attributes=True 
+        from_attributes=True,
+        orm_mode=True,
+        use_enum_values=True
     )

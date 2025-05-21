@@ -1,16 +1,16 @@
 from datetime import datetime
+import os
 from uuid import uuid4
 from sqlalchemy import String, DateTime
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
-import aiosqlite
+from app.core.configs import Config
 
 
 engine = create_async_engine(
-    "sqlite+aiosqlite:///tasks.db",
-    # "postgresql+asyncpg://postgres:postgres@localhost:5432/fastapiplanner",
-    # echo=True,
-    # pool_pre_ping=True
+    Config.get_env("DATABASE_URL"),
+    echo=True,
+    pool_pre_ping=True
 )
 
 new_session = async_sessionmaker(engine, expire_on_commit=False)
