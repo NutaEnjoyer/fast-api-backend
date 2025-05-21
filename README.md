@@ -51,9 +51,8 @@ cd fast-api-backend
 
 Создайте `.env` файл, заполненный переменными окружения по примеру из `.env.example`.
 
-```markdown
 ### 3. Запуск с Docker
-
+```
 ```shell
 docker build -t fastapi-backend .
 docker run -d -p 8000:8000 --env-file .env fastapi-backend
@@ -63,7 +62,7 @@ docker run -d -p 8000:8000 --env-file .env fastapi-backend
 ### 4. Локальный запуск (без Docker)
 
 Убедитесь, что у вас установлен Python 3.10+
-
+```
 ```shell
 python -m venv venv
 source venv/bin/activate  # или venv\Scripts\activate на Windows
@@ -73,7 +72,7 @@ uvicorn app.main:app --reload
 
 ```markdown
 ## 🛠 Alembic миграции
-
+```
 ```shell
 # создать новую миграцию
 alembic revision --autogenerate -m "create users table"```
@@ -93,3 +92,4 @@ alembic upgrade head
 ## 📄 Лицензия
 
 Проект распространяется под лицензией MIT.
+```
