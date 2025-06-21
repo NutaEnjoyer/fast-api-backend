@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from contextlib import asynccontextmanager  
+from contextlib import asynccontextmanager
 
 from app.api.routers import routers
 from app.core.database import create_tables, delete_tables
@@ -20,7 +20,7 @@ app.include_router(routers)
 
 app.add_middleware(RateLimiterMiddleware)
 
+
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
-

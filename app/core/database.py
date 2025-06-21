@@ -8,12 +8,7 @@ from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 from app.core.configs import DATABASE_URL
 
 
-
-engine = create_async_engine(
-    DATABASE_URL,
-    echo=True,
-    pool_pre_ping=True
-)
+engine = create_async_engine(DATABASE_URL, echo=True, pool_pre_ping=True)
 
 new_session = async_sessionmaker(engine, expire_on_commit=False)
 
@@ -25,9 +20,13 @@ class Model(DeclarativeBase):
 class BaseModel(Model):
     __abstract__ = True
 
-    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=lambda: str(uuid4()))
+    id: Mapped[str] = mapped_column(
+        String(36), primary_key=True, default=lambda: str(uuid4())
+    )
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
-    updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now, onupdate=datetime.now)
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime, default=datetime.now, onupdate=datetime.now
+    )
 
 
 class TaskOrm(BaseModel):
@@ -55,7 +54,9 @@ class UserOrm(BaseModel):
 
     tasks: Mapped[list["TaskOrm"]] = relationship(back_populates="user")
     time_blocks: Mapped[list["TimeBlockOrm"]] = relationship(back_populates="user")
-    pomodoro_sessions: Mapped[list["PomodoroSessionOrm"]] = relationship(back_populates="user")
+    pomodoro_sessions: Mapped[list["PomodoroSessionOrm"]] = relationship(
+        back_populates="user"
+    )
 
 
 class PomodoroSessionOrm(BaseModel):
@@ -66,7 +67,9 @@ class PomodoroSessionOrm(BaseModel):
     user_id: Mapped[str] = mapped_column(ForeignKey("users.id"), nullable=False)
     user: Mapped["UserOrm"] = relationship(back_populates="pomodoro_sessions")
 
-    rounds: Mapped[list["PomodoroRoundOrm"]] = relationship(back_populates="pomodoro_session")
+    rounds: Mapped[list["PomodoroRoundOrm"]] = relationship(
+        back_populates="pomodoro_session"
+    )
 
 
 class PomodoroRoundOrm(BaseModel):
@@ -75,8 +78,12 @@ class PomodoroRoundOrm(BaseModel):
     is_completed: Mapped[bool] = mapped_column(default=False)
     totalSeconds: Mapped[int]
 
-    pomodoro_session_id: Mapped[str] = mapped_column(ForeignKey("pomodoro_sessions.id"), nullable=False)
-    pomodoro_session: Mapped["PomodoroSessionOrm"] = relationship(back_populates="rounds")
+    pomodoro_session_id: Mapped[str] = mapped_column(
+        ForeignKey("pomodoro_sessions.id"), nullable=False
+    )
+    pomodoro_session: Mapped["PomodoroSessionOrm"] = relationship(
+        back_populates="rounds"
+    )
 
 
 class TimeBlockOrm(BaseModel):

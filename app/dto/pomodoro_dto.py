@@ -10,7 +10,7 @@ class UpdatePomodoroSessionDto(BaseModel):
 class UpdatePomodoroRoundDto(BaseModel):
     total_seconds: int
     is_completed: bool | None = None
- 
+
 
 class PomodoroSessionDto(BaseDto):
     is_completed: bool
@@ -19,4 +19,3 @@ class PomodoroSessionDto(BaseDto):
 class PomodoroRoundDto(BaseDto):
     total_seconds: int | None
     is_completed: bool | None
-

@@ -9,28 +9,28 @@ from app.core.configs import (
     JWT_SECRET_KEY,
     ALGORITHM,
     ACCESS_TOKEN_EXPIRE_MINUTES,
-    REFRESH_TOKEN_EXPIRE_MINUTES
+    REFRESH_TOKEN_EXPIRE_MINUTES,
 )
 
 # Logging setup
 logger = logging.getLogger(__name__)
 
 # Constants
-ACCESS_TOKEN_COOKIE_NAME: str = 'access_token'
-REFRESH_TOKEN_COOKIE_NAME: str = 'refresh_token'
+ACCESS_TOKEN_COOKIE_NAME: str = "access_token"
+REFRESH_TOKEN_COOKIE_NAME: str = "refresh_token"
 
 
 def create_token(data: Dict[str, Any], _timedelta: timedelta) -> str:
     """
     Creates JWT token with specified data and lifetime
-    
+
     Args:
         data: Data to include in the token
         _timedelta: Token lifetime
-        
+
     Returns:
         Encoded JWT token
-        
+
     Raises:
         Exception: When token creation fails
     """
@@ -47,10 +47,10 @@ def create_token(data: Dict[str, Any], _timedelta: timedelta) -> str:
 def create_access_token(user_id: str) -> str:
     """
     Creates access token for user
-    
+
     Args:
         user_id: User ID
-        
+
     Returns:
         Access token
     """
@@ -60,23 +60,25 @@ def create_access_token(user_id: str) -> str:
 def create_refresh_token(user_id: str) -> str:
     """
     Creates refresh token for user
-    
+
     Args:
         user_id: User ID
-        
+
     Returns:
         Refresh token
     """
-    return create_token({"id": user_id}, timedelta(minutes=REFRESH_TOKEN_EXPIRE_MINUTES))
+    return create_token(
+        {"id": user_id}, timedelta(minutes=REFRESH_TOKEN_EXPIRE_MINUTES)
+    )
 
 
 def decode_token(token: str) -> Optional[Dict[str, Any]]:
     """
     Decodes JWT token
-    
+
     Args:
         token: JWT token to decode
-        
+
     Returns:
         Decoded token data or None on error
     """
@@ -93,24 +95,24 @@ def decode_token(token: str) -> Optional[Dict[str, Any]]:
 def hash_password(password: str) -> str:
     """
     Hashes password using bcrypt
-    
+
     Args:
         password: Password to hash
-        
+
     Returns:
         Hashed password
-        
+
     Raises:
         ValueError: When password is empty
     """
     if not password:
         raise ValueError("Password cannot be empty")
-    
+
     try:
-        password_bytes = password.encode('utf-8')
+        password_bytes = password.encode("utf-8")
         salt = bcrypt.gensalt()
         hashed_bytes = bcrypt.hashpw(password_bytes, salt)
-        return hashed_bytes.decode('utf-8')
+        return hashed_bytes.decode("utf-8")
     except Exception as e:
         logger.error(f"Failed to hash password: {e}")
         raise
@@ -119,20 +121,20 @@ def hash_password(password: str) -> str:
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     """
     Verifies password against its hash
-    
+
     Args:
         plain_password: Password in plain text
         hashed_password: Hashed password
-        
+
     Returns:
         True if passwords match, False otherwise
     """
     if not plain_password or not hashed_password:
         return False
-    
+
     try:
-        password_bytes = plain_password.encode('utf-8')
-        hashed_bytes = hashed_password.encode('utf-8')
+        password_bytes = plain_password.encode("utf-8")
+        hashed_bytes = hashed_password.encode("utf-8")
         return bcrypt.checkpw(password_bytes, hashed_bytes)
     except Exception as e:
         logger.error(f"Failed to verify password: {e}")

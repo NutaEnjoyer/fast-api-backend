@@ -10,24 +10,29 @@ class Priority(str, Enum):
     MEDIUM = "medium"
     HIGH = "high"
 
+
 class CreateTaskDto(BaseModel):
-    title: str 
+    title: str
     description: str | None = None
     priority: Priority | None = None
     is_completed: bool = False
 
+
 class TaskDto(CreateTaskDto, BaseDto):
     user_id: str
-    
+
+
 class ListTaskResponseDto(ResponseDto):
     tasks: list[TaskDto]
 
+
 class TaskResponseDto(ResponseDto):
     task: TaskDto
-    
+
+
 class UpdateTaskDto(CreateTaskDto):
     title: str | None = None
 
+
 class DeleteTaskResponseDto(ResponseDto):
     id: str
-

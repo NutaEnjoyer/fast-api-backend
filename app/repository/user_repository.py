@@ -136,16 +136,14 @@ class UserRepository(BaseRepository):
         Returns:
             Updated user object
 
-        Raises:
-            ValueError: If user with the specified ID is not found
+        Note:
+            This method assumes the user exists. Existence check should be
+            performed in the service layer before calling this method.
         """
         async with self.session() as session:
             query = select(UserOrm).where(UserOrm.id == id)
             result = await session.execute(query)
             user = result.scalars().first()
-
-            if not user:
-                raise ValueError(f"User with id {id} not found")
 
             update_data = data.model_dump(exclude_unset=True)
             for key, value in update_data.items():

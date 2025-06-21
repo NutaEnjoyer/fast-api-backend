@@ -1,10 +1,13 @@
 from pydantic import BaseModel, ConfigDict
 from datetime import datetime
 
+
 def alias_generator(field_name: str) -> str:
-    parts = field_name.split('_')
-    if parts[0] == '': parts[1] = '_' + parts[1]; parts.pop(0)
-    return parts[0] + ''.join(word.capitalize() for word in parts[1:])
+    parts = field_name.split("_")
+    if parts[0] == "":
+        parts[1] = "_" + parts[1]
+        parts.pop(0)
+    return parts[0] + "".join(word.capitalize() for word in parts[1:])
 
 
 class BaseDto(BaseModel):
@@ -17,5 +20,5 @@ class BaseDto(BaseModel):
         populate_by_name=True,
         from_attributes=True,
         orm_mode=True,
-        use_enum_values=True
+        use_enum_values=True,
     )
