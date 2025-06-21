@@ -5,7 +5,7 @@ from uuid import uuid4
 from sqlalchemy import String, DateTime, ForeignKey
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
-from app.core.security import DATABASE_URL
+from app.core.configs import DATABASE_URL
 
 
 

@@ -5,54 +5,15 @@ from jose import jwt, JWTError
 from datetime import datetime, timedelta, timezone
 from typing import Optional, Dict, Any
 
-from app.core.configs import Config
+from app.core.configs import (
+    JWT_SECRET_KEY,
+    ALGORITHM,
+    ACCESS_TOKEN_EXPIRE_MINUTES,
+    REFRESH_TOKEN_EXPIRE_MINUTES
+)
 
 # Logging setup
 logger = logging.getLogger(__name__)
-
-# Configuration validation and loading
-def _load_security_config() -> Dict[str, Any]:
-    """Loads and validates security configuration"""
-    config = {}
-    
-    # JWT Secret Key
-    jwt_secret = Config.get_env("JWT_SECRET_KEY")
-    if not jwt_secret:
-        raise ValueError("JWT_SECRET_KEY environment variable is required")
-    config["jwt_secret_key"] = jwt_secret
-    
-    # Algorithm
-    config["algorithm"] = Config.get_env("ALGORITHM") or "HS256"
-    
-    # Token expiration
-    try:
-        config["access_token_expire_minutes"] = int(
-            Config.get_env("ACCESS_TOKEN_EXPIRE_MINUTES") or "15"
-        )
-        config["refresh_token_expire_days"] = int(
-            Config.get_env("REFRESH_TOKEN_EXPIRE_DAYS") or "7"
-        )
-    except ValueError as e:
-        raise ValueError(f"Invalid token expiration configuration: {e}")
-    
-    database_url = Config.get_env("DATABASE_URL")
-    if not database_url:
-        raise ValueError("DATABASE_URL environment variable is required")
-    config["database_url"] = database_url
-
-    return config
-
-# Load configuration on module import
-try:
-    SECURITY_CONFIG = _load_security_config()
-    JWT_SECRET_KEY: str = SECURITY_CONFIG["jwt_secret_key"]
-    ALGORITHM: str = SECURITY_CONFIG["algorithm"]
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = SECURITY_CONFIG["access_token_expire_minutes"]
-    REFRESH_TOKEN_EXPIRE_MINUTES: int = SECURITY_CONFIG["refresh_token_expire_days"] * 24 * 60
-    DATABASE_URL: str = SECURITY_CONFIG["database_url"]
-except Exception as e:
-    logger.error(f"Failed to load security configuration: {e}")
-    raise
 
 # Constants
 ACCESS_TOKEN_COOKIE_NAME: str = 'access_token'

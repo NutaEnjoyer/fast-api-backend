@@ -4,17 +4,23 @@ from fastapi import Request
 from fastapi.responses import JSONResponse
 import redis.asyncio as redis
 
-from app.core.configs import Config
+from app.core.configs import (
+    ANTI_DDOS_RATE_LIMIT,
+    ANTI_DDOS_RATE_WINDOW,
+    REDIS_URL
+)
 
 
 class RateLimiterMiddleware(BaseHTTPMiddleware):
     def __init__(self, app):
         super().__init__(app)
-        self.limit = int(Config.get_env("ANTI_DDOS_RATE_LIMIT"))
-        self.window = int(Config.get_env("ANTI_DDOS_RATE_WINDOW"))
-        self.redis = redis.from_url("redis://localhost", decode_responses=True)
+        self.limit = ANTI_DDOS_RATE_LIMIT
+        self.window = ANTI_DDOS_RATE_WINDOW
+        self.redis = redis.from_url(REDIS_URL, decode_responses=True)
 
     async def dispatch(self, request: Request, call_next: Callable):
+        if request.client is None:
+            return await call_next(request)
         ip = request.client.host
         path = request.url.path
         key = f"rate_limit:{ip}:{path}"
