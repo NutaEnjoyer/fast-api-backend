@@ -13,7 +13,7 @@ from app.dto.auth_dto import AuthDto
 from app.dto.user_dto import GetUserDto, UpdateUserDto, UserDto
 from app.repository.user_repository import UserRepository
 from app.utils.date import get_start_datetime
-from exceptions import NotFoundException
+from app.exceptions import NotFoundException
 
 
 class UserService:

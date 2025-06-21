@@ -21,7 +21,7 @@ from app.core.security import (
     REFRESH_TOKEN_EXPIRE_MINUTES,
 )
 from app.core.configs import DEBUG
-from exceptions import UnauthorizedError, ConflictError, NotFoundException
+from app.exceptions import UnauthorizedError, ConflictError, NotFoundException
 
 
 class AuthService(BaseService):
