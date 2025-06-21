@@ -8,7 +8,7 @@ creation, updates, responses, and data validation for task management.
 from pydantic import BaseModel
 from enum import Enum
 
-from app.dto.base_dto import BaseDto
+from app.dto.base_dto import BaseDto, BaseModelDto
 from app.dto.response_dto import ResponseDto
 
 
@@ -25,7 +25,7 @@ class Priority(str, Enum):
     HIGH = "high"
 
 
-class CreateTaskDto(BaseModel):
+class CreateTaskDto(BaseModelDto):
     """
     DTO for creating new tasks.
 

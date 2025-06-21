@@ -38,6 +38,16 @@ def alias_generator(field_name: str) -> str:
     return parts[0] + "".join(word.capitalize() for word in parts[1:])
 
 
+class BaseModelDto(BaseModel):
+    model_config = ConfigDict(
+        alias_generator=alias_generator,
+        populate_by_name=True,
+        from_attributes=True,
+        use_enum_values=True,
+        json_encoders={datetime: lambda v: v.isoformat()},
+    )
+
+
 class BaseDto(BaseModel):
     """
     Base DTO class with common fields and configuration.

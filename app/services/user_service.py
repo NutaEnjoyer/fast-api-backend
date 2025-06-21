@@ -94,8 +94,6 @@ class UserService:
             )
 
         today_start, week_start = get_start_datetime()
-        today_start = int(today_start.timestamp())
-        week_start = int(week_start.timestamp())
         total_tasks, completed_tasks, today_tasks, week_tasks = (
             await self.user_repository.get_tasks_statistic(id, today_start, week_start)
         )
@@ -169,15 +167,21 @@ class UserService:
             SQLAlchemyError: If database operation fails
         """
         # Check if user exists before updating
-        existing_user = await self.user_repository.find_by_id(id)
-        if not existing_user:
+        # existing_user = await self.user_repository.find_by_id(id)
+        # if not existing_user:
+        #     raise NotFoundException(
+        #         detail="User with this id not found",
+        #         resource_type="User",
+        #         resource_id=id,
+        #     )
+
+        user = await self.user_repository.update(id, dto)
+        if not user:
             raise NotFoundException(
                 detail="User with this id not found",
                 resource_type="User",
                 resource_id=id,
             )
-
-        user = await self.user_repository.update(id, dto)
         return self._to_dto(user)
 
     async def delete(self, id: str) -> str:

@@ -72,6 +72,7 @@ async def get_me(
         user = await service.get_me(user_id)
         return user
     except Exception as e:
+        print(e)
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Failed to retrieve user profile",

@@ -5,9 +5,10 @@ This module provides DTOs for user-related operations including
 profile management, preferences, and data validation for user entities.
 """
 
-from pydantic import BaseModel
+from datetime import datetime
+from pydantic import BaseModel, ConfigDict
 
-from app.dto.base_dto import BaseDto
+from app.dto.base_dto import BaseDto, BaseModelDto, alias_generator
 from app.dto.response_dto import ResponseDto
 
 
@@ -26,7 +27,7 @@ class UserDto(BaseDto):
     interval_count: int
 
 
-class UpdateUserDto(BaseModel):
+class UpdateUserDto(BaseModelDto):
     """
     DTO for updating existing users.
 

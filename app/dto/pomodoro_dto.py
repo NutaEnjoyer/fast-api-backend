@@ -5,12 +5,10 @@ This module provides DTOs for pomodoro-related operations including
 session management, round tracking, and data validation for time management.
 """
 
-from pydantic import BaseModel
-
-from app.dto.base_dto import BaseDto
+from app.dto.base_dto import BaseDto, BaseModelDto
 
 
-class UpdatePomodoroSessionDto(BaseModel):
+class UpdatePomodoroSessionDto(BaseModelDto):
     """
     DTO for updating pomodoro sessions.
 
@@ -20,7 +18,7 @@ class UpdatePomodoroSessionDto(BaseModel):
     is_completed: bool | None = None
 
 
-class UpdatePomodoroRoundDto(BaseModel):
+class UpdatePomodoroRoundDto(BaseModelDto):
     """
     DTO for updating pomodoro rounds.
 

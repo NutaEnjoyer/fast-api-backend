@@ -6,6 +6,7 @@ operations related to users, including CRUD operations and user statistics.
 """
 
 from typing import Tuple
+from datetime import datetime
 from sqlalchemy import and_, delete, func, select
 from app.core.database import TaskOrm, UserOrm
 from app.dto.auth_dto import AuthDto
@@ -75,15 +76,15 @@ class UserRepository(BaseRepository):
             return user
 
     async def get_tasks_statistic(
-        self, id: str, today_start: int, week_start: int
+        self, id: str, today_start: datetime, week_start: datetime
     ) -> Tuple[int, int, int, int]:
         """
         Get task statistics for a user.
 
         Args:
             id: User's unique identifier
-            today_start: Timestamp for the start of today
-            week_start: Timestamp for the start of the week
+            today_start: Datetime for the start of today
+            week_start: Datetime for the start of the week
 
         Returns:
             Tuple containing (total_tasks, completed_tasks, today_tasks, week_tasks)
@@ -125,7 +126,7 @@ class UserRepository(BaseRepository):
 
             return total_tasks, completed_tasks, today_tasks, week_tasks
 
-    async def update(self, id: str, data: UpdateUserDto) -> UserOrm:
+    async def update(self, id: str, data: UpdateUserDto) -> UserOrm | None:
         """
         Update user information.
 
